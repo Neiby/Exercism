@@ -1,0 +1,7 @@
+{application,space_age,
+             [{description,"exercism.io - space-age"},
+              {vsn,"0.0.1"},
+              {modules,[space_age]},
+              {registered,[]},
+              {applications,[kernel,stdlib]},
+              {env,[]}]}.

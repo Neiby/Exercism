@@ -1,0 +1,7 @@
+{application,robot_simulator,
+             [{description,"exercism.io - robot-simulator"},
+              {vsn,"0.0.1"},
+              {modules,[robot_simulator]},
+              {registered,[]},
+              {applications,[kernel,stdlib]},
+              {env,[]}]}.
