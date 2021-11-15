@@ -1,29 +1,29 @@
 -module(robot_simulator).
 
--export([advance/1, create/0, direction/1, left/1, place/3, position/1, right/1, main/1]).
+-export([advance/1, create/0, direction/1, left/1, place/3, position/1, right/1, loop/1]).
 
-main(Robot) ->
+loop(Robot) ->
     receive
         advance ->
             NewRobot = advance_robot(Robot),
-            main(NewRobot);
+            loop(NewRobot);
         {direction, Pid} -> 
             {Direction, _Position} = Robot,
             Pid ! {direction, Direction},
-            main(Robot);
+            loop(Robot);
         left ->
             NewRobot = turn_left(Robot),
-            main(NewRobot);
+            loop(NewRobot);
         right ->
             NewRobot = turn_right(Robot),
-            main(NewRobot);
+            loop(NewRobot);
         {position, Pid} ->
             {_, Position} = Robot,
             Pid ! {position, Position},
             exit(normal);
         {place, Direction, Position} ->
             NewRobot = {Direction, Position},
-            main(NewRobot)
+            loop(NewRobot)
     end.
 
 advance_robot({north, {X,Y}}) -> {north, {X, Y+1}};
@@ -45,7 +45,7 @@ advance(RobotPid) ->
     RobotPid ! advance.
 
 create() -> 
-    RobotPid = spawn_link(robot_simulator, main, [{}]),
+    RobotPid = spawn_link(robot_simulator, loop, [{}]),
     RobotPid.
 
 place(RobotPid, Direction, Position) ->
